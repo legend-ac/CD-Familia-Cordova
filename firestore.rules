@@ -1,0 +1,79 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Helper Primitives
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    // Default Deny Catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // 1. Members Collection
+    match /members/{memberId} {
+      allow read: if true;
+      allow write: if isValidId(memberId) &&
+        incoming().name is string && incoming().name.size() > 0 && incoming().name.size() <= 100 &&
+        incoming().active is bool;
+    }
+
+    // 2. Weeks Collection (Sunday collections ledger)
+    match /weeks/{weekId} {
+      allow read: if true;
+      allow write: if isValidId(weekId) &&
+        incoming().weekNumber is number && incoming().weekNumber >= 1 && incoming().weekNumber <= 52 &&
+        incoming().dateStr is string && incoming().dateStr.size() <= 20;
+    }
+
+    // 3. Polladas Collection
+    match /polladas/{polladaId} {
+      allow read: if true;
+      allow write: if isValidId(polladaId) &&
+        incoming().name is string && incoming().name.size() <= 120 &&
+        incoming().number is number;
+    }
+
+    // 4. Jales Collection (Fichajes)
+    match /jales/{jaleId} {
+      allow read: if true;
+      allow write: if isValidId(jaleId) &&
+        incoming().name is string && incoming().name.size() <= 100 &&
+        incoming().number is number;
+    }
+
+    // 5. Commitments Collection (Donaciones)
+    match /commitments/{commitmentId} {
+      allow read: if true;
+      allow write: if isValidId(commitmentId) &&
+        incoming().donorName is string && incoming().donorName.size() <= 100 &&
+        incoming().itemDescription is string && incoming().itemDescription.size() <= 200;
+    }
+
+    // 6. Memories Collection (Libro de oro & Fotos)
+    match /memories/{memoryId} {
+      allow read: if true;
+      allow write: if isValidId(memoryId) &&
+        incoming().title is string && incoming().title.size() <= 150 &&
+        incoming().description is string && incoming().description.size() <= 1000;
+    }
+
+    // 7. Cheers Collection (Muro de aliento de la barra)
+    match /cheers/{cheerId} {
+      allow read: if true;
+      allow write: if isValidId(cheerId) &&
+        incoming().author is string && incoming().author.size() <= 100 &&
+        incoming().text is string && incoming().text.size() <= 500;
+    }
+  }
+}

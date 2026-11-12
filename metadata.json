@@ -1,0 +1,6 @@
+{
+  "name": "CD Familia Córdova 2027",
+  "description": "Sistema ejecutivo de gestión financiera, recaudación dominical, polladas, compromisos de especies y memoria histórica para el CD Familia Córdova rumbo a Junín 2027.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

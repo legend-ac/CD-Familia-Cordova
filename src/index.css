@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+@layer utilities {
+  /* Hide scrollbars for neat horizontal tabs */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Print Styles for Physical Family Meeting Reports & PDF Exports */
+@media print {
+  /* Hide interactive web chrome */
+  header,
+  nav,
+  footer,
+  .print\\:hidden,
+  button,
+  a {
+    display: none !important;
+  }
+
+  body {
+    background-color: white !important;
+    color: #0f172a !important;
+    font-size: 11pt !important;
+    line-height: 1.3 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Force print containers to be visible and expanded */
+  .fixed {
+    position: static !important;
+    inset: auto !important;
+    background: transparent !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .print-report-content {
+    overflow: visible !important;
+    max-height: none !important;
+    display: block !important;
+    width: 100% !important;
+  }
+
+  table {
+    page-break-inside: auto;
+    width: 100% !important;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  thead {
+    display: table-header-group;
+  }
+
+  tfoot {
+    display: table-footer-group;
+  }
+}

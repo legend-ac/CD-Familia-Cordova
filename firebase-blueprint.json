@@ -1,0 +1,146 @@
+{
+  "entities": {
+    "ClubMember": {
+      "title": "ClubMember",
+      "description": "Miembro o aportante familiar del club deportivo",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 100 },
+        "relationship": { "type": "string", "maxLength": 100 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "active"]
+    },
+    "SundayWeek": {
+      "title": "SundayWeek",
+      "description": "Registro de pagos de cuotas para un domingo específico",
+      "type": "object",
+      "properties": {
+        "weekNumber": { "type": "number" },
+        "dateStr": { "type": "string", "maxLength": 20 },
+        "displayDate": { "type": "string", "maxLength": 50 },
+        "payments": { "type": "object" }
+      },
+      "required": ["weekNumber", "dateStr"]
+    },
+    "Pollada": {
+      "title": "Pollada",
+      "description": "Actividad de pollada pro-fondos",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "number": { "type": "number" },
+        "name": { "type": "string", "maxLength": 120 },
+        "targetDate": { "type": "string", "maxLength": 20 },
+        "status": { "type": "string", "enum": ["Planificada", "En preparación", "Realizada"] },
+        "pricePerDish": { "type": "number" },
+        "targetDishes": { "type": "number" },
+        "soldDishes": { "type": "number" },
+        "costPerDish": { "type": "number" },
+        "actualTotalCost": { "type": "number" },
+        "actualGrossIncome": { "type": "number" },
+        "location": { "type": "string", "maxLength": 150 },
+        "notes": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["id", "number", "name", "status"]
+    },
+    "Jale": {
+      "title": "Jale",
+      "description": "Fichaje o refuerzo para el campeonato",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "number": { "type": "number" },
+        "name": { "type": "string", "maxLength": 100 },
+        "alias": { "type": "string", "maxLength": 100 },
+        "position": { "type": "string", "maxLength": 100 },
+        "budgetAllocated": { "type": "number" },
+        "actualCost": { "type": "number" },
+        "travelStatus": { "type": "string", "enum": ["Por coordinar", "Pasaje comprado", "Confirmado"] },
+        "lodgingNote": { "type": "string", "maxLength": 200 },
+        "status": { "type": "string", "enum": ["En carpeta", "Conversando", "Comprometido", "Confirmado en lista"] },
+        "notes": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["id", "number", "name", "status"]
+    },
+    "Commitment": {
+      "title": "Commitment",
+      "description": "Compromiso o donación en especie de familiares",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "donorName": { "type": "string", "maxLength": 100 },
+        "itemDescription": { "type": "string", "maxLength": 200 },
+        "category": { "type": "string", "enum": ["Implementos", "Hidratación", "Inscripción", "Indumentaria", "Identidad", "Sorpresa"] },
+        "status": { "type": "string", "enum": ["Comprometido", "En coordinación", "Entregado"] },
+        "isSurprise": { "type": "boolean" },
+        "surpriseRequestDeadline": { "type": "string", "maxLength": 20 },
+        "estimatedValue": { "type": "number" },
+        "notes": { "type": "string", "maxLength": 500 }
+      },
+      "required": ["id", "donorName", "itemDescription", "status"]
+    },
+    "Memory": {
+      "title": "Memory",
+      "description": "Recuerdo o foto para el libro de oro familiar",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "title": { "type": "string", "maxLength": 150 },
+        "yearOrDate": { "type": "string", "maxLength": 50 },
+        "category": { "type": "string", "maxLength": 50 },
+        "author": { "type": "string", "maxLength": 100 },
+        "imageUrl": { "type": "string", "maxLength": 1000 },
+        "description": { "type": "string", "maxLength": 1000 },
+        "tags": { "type": "string", "maxLength": 200 }
+      },
+      "required": ["id", "title", "description"]
+    },
+    "Cheer": {
+      "title": "Cheer",
+      "description": "Mensaje de aliento familiar",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 64 },
+        "author": { "type": "string", "maxLength": 100 },
+        "text": { "type": "string", "maxLength": 500 },
+        "date": { "type": "string", "maxLength": 30 },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "author", "text"]
+    }
+  },
+  "firestore": {
+    "/members/{memberId}": {
+      "schema": "ClubMember",
+      "description": "Colección de aportantes del club"
+    },
+    "/weeks/{weekId}": {
+      "schema": "SundayWeek",
+      "description": "Colección de domingos y pagos"
+    },
+    "/polladas/{polladaId}": {
+      "schema": "Pollada",
+      "description": "Colección de las 3 polladas pro-fondos"
+    },
+    "/jales/{jaleId}": {
+      "schema": "Jale",
+      "description": "Colección de los 3 jales permitidos"
+    },
+    "/commitments/{commitmentId}": {
+      "schema": "Commitment",
+      "description": "Colección de compromisos y especies"
+    },
+    "/memories/{memoryId}": {
+      "schema": "Memory",
+      "description": "Colección de fotos y recuerdos del club"
+    },
+    "/cheers/{cheerId}": {
+      "schema": "Cheer",
+      "description": "Colección de mensajes del muro de aliento"
+    }
+  }
+}
